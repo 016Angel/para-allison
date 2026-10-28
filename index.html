@@ -57,7 +57,7 @@
   button.boton {
     margin-top: 8px; padding: 14px 30px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.35);
     background: rgba(255, 143, 184, 0.18); color: var(--texto); font: 600 1.05rem 'Quicksand', sans-serif;
-    cursor: pointer; backdrop-filter: blur(6px);
+    cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     animation: latido 2.2s ease-in-out infinite;
   }
   button.boton:hover { background: rgba(255, 143, 184, 0.32); }
@@ -110,7 +110,7 @@
   #tarjeta {
     background: var(--tarjeta); border: 1px solid rgba(255, 143, 184, 0.35);
     border-radius: 22px; padding: 30px 26px 22px; max-width: 380px; width: 100%; text-align: center;
-    box-shadow: 0 0 40px rgba(255, 143, 184, 0.25); backdrop-filter: blur(8px);
+    box-shadow: 0 0 40px rgba(255, 143, 184, 0.25); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     transform: translateY(16px) scale(0.96); transition: transform 0.4s;
   }
   #velo.abierto #tarjeta { transform: none; }
@@ -251,7 +251,12 @@ function redimensionar() {
     vel: Math.random() * 0.02 + 0.005
   }));
 }
-window.addEventListener('resize', () => { redimensionar(); recolocar(); });
+// En iPhone la barra de Safari cambia el alto al hacer scroll; solo reacomodamos si cambia el ancho
+// (por ejemplo, al girar el celular)
+window.addEventListener('resize', () => {
+  if (window.innerWidth === W) return;
+  redimensionar(); recolocar();
+});
 redimensionar();
 
 function dibujar() {
@@ -347,12 +352,26 @@ function puntosCorazon(n) {
   // El corazón ocupa la parte de arriba; abajo queda espacio para el mensaje
   const tam = Math.min(W * 0.75 / 32, H * 0.4 / 29);
   const cx = W / 2, cy = H * 0.5 - 17 * tam;
-  return Array.from({ length: n }, (_, k) => {
-    const t = (k / n) * Math.PI * 2;
-    const x = 16 * Math.sin(t) ** 3;
-    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-    return { x: cx + x * tam, y: cy - y * tam };
+  const punto = t => ({
+    x: cx + 16 * Math.sin(t) ** 3 * tam,
+    y: cy - (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * tam
   });
+  // Reparte los puntos a la misma distancia sobre la línea, empezando en la punta de abajo,
+  // para que ninguna estrella quede encimada
+  const muestras = 600, curva = [], acum = [0];
+  for (let i = 0; i <= muestras; i++) curva.push(punto(Math.PI + (i / muestras) * Math.PI * 2));
+  for (let i = 1; i <= muestras; i++) {
+    acum.push(acum[i - 1] + Math.hypot(curva[i].x - curva[i - 1].x, curva[i].y - curva[i - 1].y));
+  }
+  const total = acum[muestras];
+  const pts = [];
+  let j = 0;
+  for (let k = 0; k < n; k++) {
+    const meta = (k / n) * total;
+    while (acum[j] < meta) j++;
+    pts.push(curva[j]);
+  }
+  return pts;
 }
 
 function formarCorazon() {
