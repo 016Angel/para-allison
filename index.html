@@ -26,7 +26,7 @@
   }
 
   /* El "mundo" mide dos pantallas: cielo arriba, horizonte abajo.
-     Al abrir, la c√°mara empieza viendo el horizonte y sube al cielo. */
+     Al abrir, la cámara empieza viendo el horizonte y sube al cielo. */
   #mundo {
     position: fixed; left: 0; top: 0; width: 100%;
     background: linear-gradient(to bottom,
@@ -100,7 +100,7 @@
     50% { transform: scale(0.75) rotate(20deg); opacity: 0.7; }
   }
 
-  /* Tarjeta con la raz√≥n */
+  /* Tarjeta con la razón */
   #velo {
     position: fixed; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center;
     padding: 16px; background: rgba(5, 8, 22, 0.45);
@@ -142,7 +142,7 @@
 <div id="mundo">
   <canvas id="fondo"></canvas>
   <svg id="paisaje" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <!-- cerros de atr√°s -->
+    <!-- cerros de atrás -->
     <path fill="#24122f" d="M0,170 C140,120 260,150 400,125 C540,100 680,140 820,115 C900,102 960,110 1000,105 L1000,300 L0,300Z"/>
     <!-- cerros de enfrente -->
     <path fill="#0c0714" d="M0,235 C160,200 300,225 470,210 C640,195 780,230 1000,200 L1000,300 L0,300Z"/>
@@ -161,7 +161,7 @@
 <div id="inicio">
   <h1 id="titulo"></h1>
   <p id="subtitulo"></p>
-  <button class="boton" id="empezar">Mirar el cielo ‚ú®</button>
+  <button class="boton" id="empezar">Mirar el cielo ✨</button>
 </div>
 
 <div id="contador"></div>
@@ -180,31 +180,31 @@
 </div>
 
 <script>
-// ‚úèÔ∏è ======== PERSONALIZA AQU√ç ========
-const APODOS = ["Ali", "Allison", "mi ni√±a", "mi hermosa", "mi preciosa"];
-const SUBTITULO = "S√© que no siempre hice las cosas bien, y te pido perd√≥n. Escond√≠ en este cielo algunas de las razones por las que te amo, para que nunca lo dudes. Toca cada estrella para descubrirlas.";
+// ✏️ ======== PERSONALIZA AQUÍ ========
+const APODOS = ["Ali", "Allison", "mi niña", "mi hermosa", "mi preciosa"];
+const SUBTITULO = "Sé que no siempre hice las cosas bien, y te pido perdón. Escondí en este cielo algunas de las razones por las que te amo, para que nunca lo dudes. Toca cada estrella para descubrirlas.";
 const RAZONES = [
-  "Tu forma de ser. As√≠, tal cual eres, es como te amo.",
-  "Me encanta abrazarte. Ah√≠ siento que todo est√° en su lugar.",
-  "Que me andes rega√±ando siempre‚Ä¶ porque s√© que es tu forma de cuidarme.",
-  "Te amo hasta enojada. Bueno, enojada te amo m√°s, te ves bien bonita.",
-  "Que est√©s conmigo. No sabes lo afortunado que me siento.",
+  "Tu forma de ser. Así, tal cual eres, es como te amo.",
+  "Me encanta abrazarte. Ahí siento que todo está en su lugar.",
+  "Que me andes regañando siempre… porque sé que es tu forma de cuidarme.",
+  "Te amo hasta enojada. Bueno, enojada te amo más, te ves bien bonita.",
+  "Que estés conmigo. No sabes lo afortunado que me siento.",
   "Tu sonrisa. Me la quedo viendo como menso y no puedo evitarlo.",
   "Tus ojitos hermosos, en los que me pierdo cada vez que me miras.",
-  "Que volvimos a hablar. Neta, me hac√≠as mucha falta.",
-  "Porque por ti quiero ser mejor cada d√≠a, y lo voy a demostrar."
+  "Que volvimos a hablar. Neta, me hacías mucha falta.",
+  "Porque por ti quiero ser mejor cada día, y lo voy a demostrar."
 ];
 const FINAL_TITULO = "Te amo, Ali";
-// Cada l√≠nea aparece una despu√©s de otra
+// Cada línea aparece una después de otra
 const FINAL_TEXTO = [
-  "Perd√≥name por las veces que te fall√©.",
+  "Perdóname por las veces que te fallé.",
   "Antes te miraba guapa.",
   "Hoy te miro hermosa.",
-  "Y te seguir√© viendo preciosa, perdidamente y para siempre. ‚ô°"
+  "Y te seguiré viendo preciosa, perdidamente y para siempre. ♡"
 ];
 // ===================================
 
-// El t√≠tulo va cambiando entre sus apodos
+// El título va cambiando entre sus apodos
 const titulo = document.getElementById('titulo');
 titulo.textContent = 'Para ti, ';
 const apodo = document.createElement('span');
@@ -280,7 +280,7 @@ function dibujar() {
 }
 dibujar();
 
-// Al abrir: la c√°mara ve el horizonte y luego sube al cielo
+// Al abrir: la cámara ve el horizonte y luego sube al cielo
 mundo.style.transform = `translateY(${-H}px)`;
 setTimeout(() => {
   mundo.style.transition = 'transform 5s cubic-bezier(.45,0,.2,1)';
@@ -324,7 +324,7 @@ function crearEstrellas() {
 }
 
 function actualizarContador() {
-  contador.textContent = `‚ú® ${vistas} de ${RAZONES.length} estrellas`;
+  contador.textContent = `✨ ${vistas} de ${RAZONES.length} estrellas`;
 }
 
 function abrir(i, b) {
@@ -332,7 +332,7 @@ function abrir(i, b) {
   if (!b.classList.contains('vista')) {
     b.classList.add('vista'); vistas++; actualizarContador();
   }
-  document.getElementById('numero').textContent = `Raz√≥n #${i + 1} ¬∑ ${APODOS[i % APODOS.length]}`;
+  document.getElementById('numero').textContent = `Razón #${i + 1} · ${APODOS[i % APODOS.length]}`;
   document.getElementById('razon').textContent = RAZONES[i];
   velo.classList.add('abierto');
 }
@@ -342,9 +342,9 @@ velo.addEventListener('click', () => {
   if (vistas === RAZONES.length && !terminado) setTimeout(formarCorazon, 600);
 });
 
-/* ---------- Final: las estrellas forman un coraz√≥n ---------- */
+/* ---------- Final: las estrellas forman un corazón ---------- */
 function puntosCorazon(n) {
-  // El coraz√≥n ocupa la parte de arriba; abajo queda espacio para el mensaje
+  // El corazón ocupa la parte de arriba; abajo queda espacio para el mensaje
   const tam = Math.min(W * 0.75 / 32, H * 0.4 / 29);
   const cx = W / 2, cy = H * 0.5 - 17 * tam;
   return Array.from({ length: n }, (_, k) => {
@@ -364,7 +364,7 @@ function formarCorazon() {
 }
 
 function dibujarLinea() {
-  // La l√≠nea usa muchos puntos para que el coraz√≥n se vea suave
+  // La línea usa muchos puntos para que el corazón se vea suave
   const pts = puntosCorazon(80);
   pts.push(pts[0]);
   const linea = document.getElementById('linea');
@@ -379,7 +379,7 @@ function dibujarLinea() {
   setTimeout(() => document.getElementById('final').classList.add('visible'), 2200);
 }
 
-// Si cambia el tama√±o de la pantalla, reacomoda
+// Si cambia el tamaño de la pantalla, reacomoda
 function recolocar() {
   if (!terminado) return;
   const pts = puntosCorazon(estrellas.length);
